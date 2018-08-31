@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SecurityDatabase>
+    <Users>
+        <User connectionNumber="0" consecutiveErrors="0" id="1"
+            isDisable="false" lastConnection="0" login="root" password="5bvUJ9+G8PIHr6hagLZ5vTvtLrY*">
+            <RoleRef id="1"/>
+        </User>
+        <User connectionNumber="0" consecutiveErrors="0" id="2"
+            isDisable="false" lastConnection="0" login="denis" password="5bvUJ9+G8PIHr6hagLZ5vTvtLrY*">
+            <RoleRef id="2"/>
+        </User>
+        <User connectionNumber="53" consecutiveErrors="0" id="3"
+            isDisable="false" lastConnection="1535658359933"
+            login="domi" password="5bvUJ9+G8PIHr6hagLZ5vTvtLrY*">
+            <RoleRef id="2"/>
+        </User>
+    </Users>
+    <Roles>
+        <Role id="1" roleName="Admin"/>
+        <Role id="2" roleName="ProjectManager"/>
+    </Roles>
+</SecurityDatabase>
