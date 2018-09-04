@@ -65,7 +65,7 @@ public class XmlSecurityManagerCoreTest {
 		
 		Assert.assertEquals( "root", user.getLogin() );
 		Set<Role> roles = user.getRoles();
-		Assert.assertEquals( 1, roles.size() );
+		Assert.assertEquals( 2, roles.size() );
 		Assert.assertEquals( "admin", roles.iterator().next().getRoleName() );
 	}
 
