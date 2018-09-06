@@ -38,9 +38,9 @@
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>3.0.0</version>
 				<configuration>
-				    <configLocation>./ISCodingConventions.xml</configLocation>
+				    <configLocation>ISCodingConventions.xml</configLocation>
 				    <sourceDirectories>
-				        <sourceDirectory>src/</sourceDirectory>
+				        <sourceDirectory>src/main/java</sourceDirectory>
 				    </sourceDirectories>
 				</configuration>
 			</plugin>
