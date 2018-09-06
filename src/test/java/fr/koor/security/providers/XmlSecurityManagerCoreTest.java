@@ -30,7 +30,7 @@ public class XmlSecurityManagerCoreTest {
 	@Before public void setUp() {
 		try {
 			this.securityManager = new XmlSecurityManager( FILENAME );
-		} catch( Exception exception ) {
+		} catch ( Exception exception ) {
 			throw new RuntimeException( exception );
 		}
 	}
@@ -38,12 +38,12 @@ public class XmlSecurityManagerCoreTest {
 	@After public void tearDown() {
 		try {
 			this.securityManager.close();				
-		} catch( Exception exception ) {
+		} catch ( Exception exception ) {
 			throw new RuntimeException( exception );
 		}
 		try {
 			FileSystem.delete( FILENAME );
-		} catch( Exception exception ) {
+		} catch ( Exception exception ) {
 			throw new RuntimeException( exception );
 		}
 		Assert.assertFalse( FileSystem.isExisting( FILENAME ) );
@@ -82,7 +82,7 @@ public class XmlSecurityManagerCoreTest {
 		try {
 			user = userManager.checkCredentials( "James", "Bond" );
 			throw new Exception( "It's not possible" );
-		} catch( BadCredentialsException exception ) {
+		} catch ( BadCredentialsException exception ) {
 			// Ok : nothing to do
 		}
 
@@ -90,11 +90,11 @@ public class XmlSecurityManagerCoreTest {
 		try {
 			user = userManager.checkCredentials( this.testedUserLogin , "Bond" );
 			throw new Exception( "It's not possible" );
-		} catch( BadCredentialsException exception ) {
+		} catch ( BadCredentialsException exception ) {
 			try {
 				user = userManager.checkCredentials( this.testedUserLogin , "Bond" );
 				throw new Exception( "It's not possible" );
-			} catch( BadCredentialsException exception1 ) {
+			} catch ( BadCredentialsException exception1 ) {
 				// Nothing to do
 			}
 		}
@@ -130,7 +130,7 @@ public class XmlSecurityManagerCoreTest {
 		try {
 			user = userManager.checkCredentials( this.testedUserLogin, this.testedUserPassword );
 			throw new Exception( "It's not possible, user is normally removed" );
-		} catch( BadCredentialsException exception ) {
+		} catch ( BadCredentialsException exception ) {
 			// Ok : nothing to do
 		}
 	}
@@ -144,7 +144,7 @@ public class XmlSecurityManagerCoreTest {
 			try {
 				userManager.insertUser( this.testedUserLogin, this.testedUserPassword );
 				throw new RuntimeException( this.testedUserLogin + " login is registered two times" );
-			} catch( SecurityManagerException exception ) {
+			} catch ( SecurityManagerException exception ) {
 				// Test is ok
 			}
 		} finally {
@@ -198,7 +198,7 @@ public class XmlSecurityManagerCoreTest {
 		try {
 			roleManager.selectRoleByName( roleName );
 			throw new Exception( "Role exists" );
-		} catch( SecurityManagerException exception ) {
+		} catch ( SecurityManagerException exception ) {
 			// Nothing to do
 		}
 		
@@ -227,7 +227,7 @@ public class XmlSecurityManagerCoreTest {
 			Role badRole = roleManager.selectRoleByName( newRoleName );
 			System.out.println( badRole );
 			throw new Exception( "Role exists" );
-		} catch( SecurityManagerException exception ) {
+		} catch ( SecurityManagerException exception ) {
 			// Nothing to do
 		}
 	}
@@ -286,35 +286,35 @@ public class XmlSecurityManagerCoreTest {
 		try {
 			userManager.checkCredentials( "toto'tata", "toto'tata" );
 			Assert.fail();
-		} catch( BadCredentialsException exception ) {
+		} catch ( BadCredentialsException exception ) {
 			// Ok
 		}
 
 		try {
 			userManager.checkCredentials( "toto\"tata", "toto\"tata" );
 			Assert.fail();
-		} catch( BadCredentialsException exception ) {
+		} catch ( BadCredentialsException exception ) {
 			// Ok
 		}
 
 		try {
 			userManager.checkCredentials( "toto&tata", "toto&tata" );
 			Assert.fail();
-		} catch( BadCredentialsException exception ) {
+		} catch ( BadCredentialsException exception ) {
 			// Ok
 		}
 
 		try {
 			userManager.checkCredentials( "toto<tata", "toto<tata" );
 			Assert.fail();
-		} catch( BadCredentialsException exception ) {
+		} catch ( BadCredentialsException exception ) {
 			// Ok
 		}
 
 		try {
 			userManager.checkCredentials( "toto>tata", "toto>tata" );
 			Assert.fail();
-		} catch( BadCredentialsException exception ) {
+		} catch ( BadCredentialsException exception ) {
 			// Ok
 		}
 

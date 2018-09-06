@@ -7,7 +7,6 @@ import fr.koor.security.Role;
 import fr.koor.security.RoleManager;
 import fr.koor.security.User;
 import fr.koor.security.UserManager;
-import fr.koor.security.providers.XmlSecurityManager;
 
 public class XmlSecurityManagerCoreTest2 {
 

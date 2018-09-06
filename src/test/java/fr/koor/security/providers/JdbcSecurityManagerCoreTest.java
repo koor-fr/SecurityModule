@@ -33,7 +33,7 @@ abstract public class JdbcSecurityManagerCoreTest {
 		try {
 			//Class.forName( this.dataSource.getDriverClassName() );
 			this.securityManager = new JdbcSecurityManager( this.dataSource );
-		} catch( Exception exception ) {
+		} catch ( Exception exception ) {
 			throw new RuntimeException( exception );
 		}
 	}
@@ -43,7 +43,7 @@ abstract public class JdbcSecurityManagerCoreTest {
 			try {
 				Method getConnectionMethod = JdbcSecurityManager.class.getDeclaredMethod( "getConnection" );
 				getConnectionMethod.setAccessible( true );
-				Connection connection = (Connection)getConnectionMethod.invoke( this.securityManager );
+				Connection connection = (Connection) getConnectionMethod.invoke( this.securityManager );
 				
 				String strSql = "DELETE FROM T_USERS WHERE Login='" + testedUserLogin.replace( "'", "''" ) + "'";
 				connection.createStatement().executeUpdate( strSql );
@@ -51,11 +51,11 @@ abstract public class JdbcSecurityManagerCoreTest {
 				strSql = "DELETE FROM T_ROLES";
 				connection.createStatement().executeUpdate( strSql );
 
-			} catch( Exception exception ) {
+			} catch ( Exception exception ) {
 				// User previously deleted. It's correct.
 			}
 			this.securityManager.close();				
-		} catch( Exception exception ) {
+		} catch ( Exception exception ) {
 			throw new RuntimeException( exception );
 		}
 	}
@@ -64,13 +64,13 @@ abstract public class JdbcSecurityManagerCoreTest {
 	public void test_openSession() throws Exception {
 		Method getConnectionMethod = JdbcSecurityManager.class.getDeclaredMethod( "getConnection" );
 		getConnectionMethod.setAccessible( true );
-		DatabaseMetaData metaData = ((Connection)getConnectionMethod.invoke( this.securityManager )).getMetaData();
+		DatabaseMetaData metaData = ( (Connection) getConnectionMethod.invoke( this.securityManager ) ).getMetaData();
 		String [] tableNames = { "T_USERS", "T_ROLES", "T_USER_ROLES" };
 		ResultSet rsTables = metaData.getTables( null, null, null, new String[] { "TABLE" } );
 		int count = 0;
 		while ( rsTables.next() ) {
 			String tableName = rsTables.getString( "TABLE_NAME" );
-			for( int i=0; i<tableNames.length; i++ ) {
+			for ( int i=0; i<tableNames.length; i++ ) {
 				if ( tableName.equalsIgnoreCase( tableNames[i] ) ) count ++;
 			}
 		}
@@ -89,7 +89,7 @@ abstract public class JdbcSecurityManagerCoreTest {
 		try {
 			user = userManager.checkCredentials( "James", "Bond" );
 			throw new Exception( "It's not possible" );
-		} catch( BadCredentialsException exception ) {
+		} catch ( BadCredentialsException exception ) {
 			// Ok : nothing to do
 		}
 
@@ -97,11 +97,11 @@ abstract public class JdbcSecurityManagerCoreTest {
 		try {
 			user = userManager.checkCredentials( this.testedUserLogin , "Bond" );
 			throw new Exception( "It's not possible" );
-		} catch( BadCredentialsException exception ) {
+		} catch ( BadCredentialsException exception ) {
 			try {
 				user = userManager.checkCredentials( this.testedUserLogin , "Bond" );
 				throw new Exception( "It's not possible" );
-			} catch( BadCredentialsException exception1 ) {
+			} catch ( BadCredentialsException exception1 ) {
 				// Nothing to do
 			}
 		}
@@ -117,15 +117,15 @@ abstract public class JdbcSecurityManagerCoreTest {
 		try {
 			user = userManager.checkCredentials( this.testedUserLogin , "Bond" );
 			throw new Exception( "It's not possible" );
-		} catch( BadCredentialsException exception ) {
+		} catch ( BadCredentialsException exception ) {
 			try {
 				user = userManager.checkCredentials( this.testedUserLogin , "Bond" );
 				throw new Exception( "It's not possible" );
-			} catch( BadCredentialsException exception1 ) {
-				try{
+			} catch ( BadCredentialsException exception1 ) {
+				try {
 					user = userManager.checkCredentials( this.testedUserLogin , "Bond" );
 					throw new Exception( "It's not possible" );
-				}catch (AccountDisabledException e) {
+				} catch ( AccountDisabledException e ) {
 					// Ok : nothing to do
 				}
 			}
@@ -137,7 +137,7 @@ abstract public class JdbcSecurityManagerCoreTest {
 		try {
 			user = userManager.checkCredentials( this.testedUserLogin, this.testedUserPassword );
 			throw new Exception( "It's not possible, user is normally removed" );
-		} catch( BadCredentialsException exception ) {
+		} catch ( BadCredentialsException exception ) {
 			// Ok : nothing to do
 		}
 	}
@@ -150,7 +150,7 @@ abstract public class JdbcSecurityManagerCoreTest {
 			try {
 				userManager.insertUser( this.testedUserLogin, this.testedUserPassword );
 				throw new RuntimeException( this.testedUserLogin + " login is registered two times" );
-			} catch( SecurityManagerException exception ) {
+			} catch ( SecurityManagerException exception ) {
 				// Test is ok
 			}
 		} finally {
@@ -209,7 +209,7 @@ abstract public class JdbcSecurityManagerCoreTest {
 		try {
 			roleManager.selectRoleByName( newRoleName );
 			throw new Exception( "Role exists" );
-		} catch( SecurityManagerException exception ) {
+		} catch ( SecurityManagerException exception ) {
 			// Nothing to do
 		}
 	}
@@ -247,8 +247,8 @@ abstract public class JdbcSecurityManagerCoreTest {
 			roleManager.deleteRole( role2 );
 		} finally {			
 			boolean rolesAreDeleted = true;
-			try { roleManager.selectRoleByName("Administrator");  rolesAreDeleted = false; } catch ( SecurityManagerException exception ) {}
-			try { roleManager.selectRoleByName("Client");  rolesAreDeleted = false; } catch ( SecurityManagerException exception ) {}
+			try { roleManager.selectRoleByName( "Administrator" );  rolesAreDeleted = false; } catch ( SecurityManagerException exception ) { }
+			try { roleManager.selectRoleByName( "Client" );  rolesAreDeleted = false; } catch ( SecurityManagerException exception ) { }
 			
 			roleManager.deleteRole( role1 );
 			roleManager.deleteRole( role2 );
@@ -274,28 +274,28 @@ abstract public class JdbcSecurityManagerCoreTest {
 		try {
 			userManager.checkCredentials( "toto' or 1=1 -- ", "toto' or 1=1 -- " );
 			Assert.fail();
-		} catch( BadCredentialsException exception ) {
+		} catch ( BadCredentialsException exception ) {
 			// Ok
 		}
 
 		try {
 			userManager.checkCredentials( "toto\\' or 1=1 -- ", "toto\\' or 1=1 -- " );
 			Assert.fail();
-		} catch( BadCredentialsException exception ) {
+		} catch ( BadCredentialsException exception ) {
 			// Ok
 		}
 
 		try {
 			userManager.checkCredentials( "toto\\'' or 1=1 -- ", "toto\\'' or 1=1 -- " );
 			Assert.fail();
-		} catch( BadCredentialsException exception ) {
+		} catch ( BadCredentialsException exception ) {
 			// Ok
 		}
 
 		try {
 			userManager.checkCredentials( "toto\\''' or 1=1 -- ", "toto\\''' or 1=1 -- " );
 			Assert.fail();
-		} catch( BadCredentialsException exception ) {
+		} catch ( BadCredentialsException exception ) {
 			// Ok
 		}
 		
