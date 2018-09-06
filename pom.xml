@@ -32,9 +32,9 @@
 		</plugins>
     </build>
 
-	<reporting>            <!-- Target checkstyle:checkstyle -->
+	<reporting>            
 		<plugins>
-			<plugin>
+			<plugin>         <!-- Target checkstyle:checkstyle -->
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>3.0.0</version>
