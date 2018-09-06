@@ -9,8 +9,8 @@
             isDisable="false" lastConnection="0" login="denis" password="5bvUJ9+G8PIHr6hagLZ5vTvtLrY*">
             <RoleRef id="2"/>
         </User>
-        <User connectionNumber="62" consecutiveErrors="0" id="3"
-            isDisable="false" lastConnection="1536226886372"
+        <User connectionNumber="64" consecutiveErrors="0" id="3"
+            isDisable="false" lastConnection="1536249950572"
             login="domi" password="5bvUJ9+G8PIHr6hagLZ5vTvtLrY*">
             <RoleRef id="2"/>
         </User>

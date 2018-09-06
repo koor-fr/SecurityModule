@@ -17,7 +17,7 @@
 	    <checkstyle.config.location>ISCodingConventions.xml</checkstyle.config.location>
 	</properties>
 
-    <build>
+	<build>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -30,7 +30,7 @@
 				</configuration>
 			</plugin>
 		</plugins>
-    </build>
+	</build>
 
 	<reporting>            
 		<plugins>
