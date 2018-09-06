@@ -13,7 +13,7 @@ import fr.koor.security.User;
 /**
  * This class represents the concept of user for a considered computer system.
  * A user has a number of attributes and a set of roles assigned to it.
- * <br/><br/>
+ * <br><br>
  * Note: you cannot directly create a User. Instead of, use an UserManager instance.
  * 
  * @see fr.koor.security.Role
@@ -223,7 +223,7 @@ public class UserImpl implements User {
 	 * Returns the consecutive error number 
 	 * @return The  consecutive error number.
 	 * 
-	 * @see fr.koor.security.impl.UserImpl#setConsecutiveError( int )
+	 * @see fr.koor.security.impl.UserImpl#setConsecutiveErrors( int )
 	 */
 	public int getConsecutiveErrors() {
 		return consecutiveErrors;

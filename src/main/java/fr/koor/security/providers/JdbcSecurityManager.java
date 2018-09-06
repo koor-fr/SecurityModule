@@ -39,7 +39,6 @@ import fr.koor.utility.DataSource;
  * </p>
  * 
  * @see fr.koor.security.SecurityManager
- * @see fr.koor.utility.utilities.jdbc.DataSource
  * 
  * @author Infini Software - Dominique Liard
  * @since 0.3.6

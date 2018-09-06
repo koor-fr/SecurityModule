@@ -40,7 +40,7 @@ public class FileSystem {
 	 * <p>
 	 *		Remove the specified directory. If the directory is not empty and the recursive value equals true, all files and
 	 * 		subdirectories are removed. Otherwise, an IOException will be thrown.
-	 * <p>
+	 * </p>
 	 * <p>
 	 * 		<b>Important note</b>: removed files and directories are not moved into the trash. There are definitivly removed.
 	 * 		Please, use this method with caution. 
