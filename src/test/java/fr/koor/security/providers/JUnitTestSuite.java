@@ -5,8 +5,7 @@ import org.junit.runners.Suite;
 
 @RunWith( Suite.class )				
 @Suite.SuiteClasses( {				
-	JdbcSecurityManagerCoreTest_Derby.class,
-	JdbcSecurityManagerCoreTest_MySql.class,
+	JdbcSecurityManagerCoreTest.class,
 	XmlSecurityManagerCoreTest.class,
 	XmlSecurityManagerCoreTest2.class
 } )		

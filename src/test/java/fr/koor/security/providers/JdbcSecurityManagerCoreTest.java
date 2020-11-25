@@ -20,16 +20,22 @@ import fr.koor.security.User;
 import fr.koor.security.UserManager;
 import fr.koor.utility.DataSource;
 
-abstract public class JdbcSecurityManagerCoreTest {
+public class JdbcSecurityManagerCoreTest {
 
-	protected DataSource dataSource = null;
+	protected DataSource dataSource = new DataSource() {
+		@Override public String getDriverClassName() { return "org.mariadb.jdbc.Driver"; }
+		@Override public String getConnectionURL() { return "jdbc:mariadb://localhost/SecurityModule"; }
+		@Override public String getLogin() { return "root"; }
+		@Override public String getPassword() {	return ""; }
+	};
 	protected JdbcSecurityManager securityManager = null;
 
 	private String testedUserLogin = "toto's";
 	private String testedUserPassword = "titi's";
 	
 	
-	@Before public void setUp() {
+	@Before 
+	public void setUp() {
 		try {
 			//Class.forName( this.dataSource.getDriverClassName() );
 			this.securityManager = new JdbcSecurityManager( this.dataSource );
@@ -38,7 +44,8 @@ abstract public class JdbcSecurityManagerCoreTest {
 		}
 	}
 
-	@After public void tearDown() {
+	@After
+	public void tearDown() {
 		try {
 			try {
 				Method getConnectionMethod = JdbcSecurityManager.class.getDeclaredMethod( "getConnection" );
@@ -61,6 +68,7 @@ abstract public class JdbcSecurityManagerCoreTest {
 	}
 
 	
+	@Test 
 	public void test_openSession() throws Exception {
 		Method getConnectionMethod = JdbcSecurityManager.class.getDeclaredMethod( "getConnection" );
 		getConnectionMethod.setAccessible( true );
@@ -78,7 +86,8 @@ abstract public class JdbcSecurityManagerCoreTest {
 	}
 
 	
-	public void test_UserMethods() throws Exception {
+	@Test 
+	public void test_checkCredentials() throws Exception {
 		UserManager userManager = this.securityManager.getUserManager();
 		User user = userManager.insertUser( this.testedUserLogin, this.testedUserPassword );
 		
@@ -88,7 +97,7 @@ abstract public class JdbcSecurityManagerCoreTest {
 		// Check a bad identity
 		try {
 			user = userManager.checkCredentials( "James", "Bond" );
-			throw new Exception( "It's not possible" );
+			Assert.fail( "It's not possible" );
 		} catch ( BadCredentialsException exception ) {
 			// Ok : nothing to do
 		}
@@ -96,35 +105,41 @@ abstract public class JdbcSecurityManagerCoreTest {
 		// Check a two consecutive errors (but good login)
 		try {
 			user = userManager.checkCredentials( this.testedUserLogin , "Bond" );
-			throw new Exception( "It's not possible" );
+			Assert.fail( "It's not possible" );
 		} catch ( BadCredentialsException exception ) {
 			try {
 				user = userManager.checkCredentials( this.testedUserLogin , "Bond" );
-				throw new Exception( "It's not possible" );
+				Assert.fail( "It's not possible" );
 			} catch ( BadCredentialsException exception1 ) {
 				// Nothing to do
 			}
 		}
 		
-		
 		// Check a good identity
 		user = userManager.checkCredentials( this.testedUserLogin, this.testedUserPassword );
 		Assert.assertEquals( 0 , user.getConsecutiveErrors() );
 		Assert.assertEquals( false , user.isDisabled() );
-		
-		
+
+		userManager.deleteUser( user );
+	}
+
+	@Test 
+	public void test_checkCredentialsWithDeactivation() throws Exception {
+		UserManager userManager = this.securityManager.getUserManager();
+		User user = userManager.insertUser( this.testedUserLogin, this.testedUserPassword );
+
 		// Check a three consecutive errors
 		try {
 			user = userManager.checkCredentials( this.testedUserLogin , "Bond" );
-			throw new Exception( "It's not possible" );
+			Assert.fail( "It's not possible" );
 		} catch ( BadCredentialsException exception ) {
 			try {
 				user = userManager.checkCredentials( this.testedUserLogin , "Bond" );
-				throw new Exception( "It's not possible" );
+				Assert.fail( "It's not possible" );
 			} catch ( BadCredentialsException exception1 ) {
 				try {
 					user = userManager.checkCredentials( this.testedUserLogin , "Bond" );
-					throw new Exception( "It's not possible" );
+					Assert.fail( "It's not possible" );
 				} catch ( AccountDisabledException e ) {
 					// Ok : nothing to do
 				}
@@ -132,16 +147,22 @@ abstract public class JdbcSecurityManagerCoreTest {
 		}
 		
 		userManager.deleteUser( user );
-
-		// L'utilisateur ne doit plus exister
-		try {
-			user = userManager.checkCredentials( this.testedUserLogin, this.testedUserPassword );
-			throw new Exception( "It's not possible, user is normally removed" );
-		} catch ( BadCredentialsException exception ) {
-			// Ok : nothing to do
-		}
 	}
 
+	@Test
+	public void test_insertUser() throws Exception {
+		UserManager userManager = this.securityManager.getUserManager();
+		User user = userManager.insertUser( this.testedUserLogin, this.testedUserPassword );
+		
+		try {
+			Assert.assertEquals( 0 , user.getConsecutiveErrors() );
+			Assert.assertEquals( false , user.isDisabled() );
+		} finally {
+			userManager.deleteUser( user );
+		}
+	}
+	
+	@Test 
 	public void test_insertUser_alreadyRegistered() throws Exception {
 		UserManager userManager = this.securityManager.getUserManager();
 		User user = null;
@@ -158,6 +179,7 @@ abstract public class JdbcSecurityManagerCoreTest {
 		}
 	}
 	
+	@Test 
 	public void test_updateUser() throws Exception {
 		UserManager userManager = this.securityManager.getUserManager();
 		User user = userManager.insertUser( this.testedUserLogin, this.testedUserPassword );
@@ -173,13 +195,15 @@ abstract public class JdbcSecurityManagerCoreTest {
 		userManager.deleteUser( user );		
 	}
 	
-	@Test public void test_encryptPassword() throws Exception { 
+	@Test
+	public void test_encryptPassword() throws Exception { 
 		UserManager userManager = this.securityManager.getUserManager();
 		if ( userManager.encryptPassword( "Ellipse" ).equals( "39s6tkG+ZRAb0hR0YNSohRDYR4w*" ) == false ) {
 			throw new Exception( "Bad password encryption" );
 		}
 	}
 	
+	@Test 
 	public void test_RoleMethods() throws Exception {
 		String roleName = "Administrator";
 		String newRoleName = "Admin2";
@@ -214,6 +238,7 @@ abstract public class JdbcSecurityManagerCoreTest {
 		}
 	}
 	
+	@Test 
 	public void test_UserRolesReferences() throws Exception {
 		UserManager userManager = this.securityManager.getUserManager();
 		RoleManager roleManager = this.securityManager.getRoleManager();
@@ -257,6 +282,7 @@ abstract public class JdbcSecurityManagerCoreTest {
 		}
 	}
 	
+	@Test 
 	public void test_lastConnection() throws Exception {
 		UserManager userManager = this.securityManager.getUserManager();
 		userManager.insertUser( this.testedUserLogin, this.testedUserPassword );
@@ -267,6 +293,7 @@ abstract public class JdbcSecurityManagerCoreTest {
 		Assert.assertTrue( user.getLastConnection().after( referenceDate ) );
 	}
 
+	@Test 
 	public void test_sqlInjection() throws Exception {
 		UserManager userManager = this.securityManager.getUserManager();
 		userManager.insertUser( this.testedUserLogin, this.testedUserPassword );
